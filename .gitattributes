@@ -1,8 +1,8 @@
 ## standard default enconding
-* text=auto
+* text=auto eol=lf
 
 ## UNIX specific files
-*.sh    text eol=lf
+*.sh    text
 
 ## Windows specific files
 *.bat               text eol=crlf
