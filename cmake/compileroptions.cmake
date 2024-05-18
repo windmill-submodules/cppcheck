@@ -24,11 +24,11 @@ function(target_externals_include_directories TARGET)
     endif()
 endfunction()
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MSVC)
     add_compile_options(-Weverything)
 endif()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MSVC))
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         # "Release" uses -O3 by default
         add_compile_options(-O2)
@@ -68,7 +68,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-maybe-uninitialized)   # there are some false positives
     add_compile_options(-Wsuggest-attribute=noreturn)
     add_compile_options(-Wno-shadow)                # whenever a local variable or type declaration shadows another one
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MSVC)
     if (CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL 14 OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 14)
         # TODO: verify this regression still exists in clang-15
         if (CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
@@ -142,7 +142,16 @@ if (MSVC)
     if (WARNINGS_ARE_ERRORS)
         add_compile_options(/WX) # Treat Warning As Errors
     endif()
-    add_compile_options(/MP) # Multi-processor Compilation
+    add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>) # Multi-processor Compilation
+
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        add_compile_options_safe(-Wno-missing-field-initializers)
+        add_compile_options_safe(-Wno-bitwise-instead-of-logical)
+        add_compile_options_safe(-Wno-missing-braces)
+        add_compile_options_safe(-Wno-multichar)
+        add_compile_options_safe(-Wno-unused-local-typedef)
+        add_compile_options_safe(-Wno-unused-function)
+    endif()
 
     # Advanced
     # Character Set - Use Unicode Character Set
@@ -188,7 +197,7 @@ if (MSVC)
     add_compile_options(/wd4805) # warning C4805: '==' : unsafe mix of type 'bool' and type 'long long' in operation
 
     # C/C++ - All Options
-    add_compile_options(/Zc:throwingNew /Zc:__cplusplus) # Additional Options
+    add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Zc:throwingNew> /Zc:__cplusplus) # Additional Options
 
     # Linker - General
     add_link_options($<$<CONFIG:Debug>:/INCREMENTAL>) # Enable Incremental Linking - Yes

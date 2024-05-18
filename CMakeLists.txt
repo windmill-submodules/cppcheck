@@ -101,5 +101,6 @@ add_subdirectory(gui)   # Graphical application
 add_subdirectory(tools/triage)   # Triage tool
 add_subdirectory(tools)
 add_subdirectory(man)
-
-include(cmake/clang_tidy.cmake)
+if(NOT DISABLE_CLANG_TIDY)
+    include(cmake/clang_tidy.cmake)
+endif()
