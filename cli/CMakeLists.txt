@@ -73,14 +73,14 @@ install(TARGETS cppcheck
     COMPONENT applications)
 
 install(FILES ${addons}
-   DESTINATION ${FILESDIR}/addons
+   DESTINATION ${FULL_FILESDIR}/addons
    COMPONENT headers)
 
 install(FILES ${cfgs}
-   DESTINATION ${FILESDIR}/cfg
+   DESTINATION ${FULL_FILESDIR}/cfg
    COMPONENT headers)
 
 install(FILES ${platforms}
-   DESTINATION ${FILESDIR}/platforms
+   DESTINATION ${FULL_FILESDIR}/platforms
    COMPONENT headers)
 

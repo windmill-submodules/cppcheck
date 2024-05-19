@@ -846,7 +846,7 @@ Library::Error MainWindow::loadLibrary(Library &library, const QString &filename
 
 #ifdef FILESDIR
     // Try to load the library from FILESDIR/cfg..
-    const QString filesdir = FILESDIR;
+    const QString filesdir = getFilesDir();
     if (!filesdir.isEmpty()) {
         ret = library.load(nullptr, (filesdir+"/cfg/"+filename).toLatin1());
         if (ret.errorcode != Library::ErrorCode::FILE_NOT_FOUND)

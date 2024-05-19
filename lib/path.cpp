@@ -343,3 +343,27 @@ std::string Path::join(const std::string& path1, const std::string& path2) {
         return path2;
     return ((path1.back() == '/') ? path1 : (path1 + "/")) + path2;
 }
+
+std::string Path::getOptionalFilesDirPath(const std::string &exename)
+{
+    std::string filesdir;
+#ifdef FILESDIR
+    filesdir = FILESDIR;
+    if (!filesdir.empty()) {
+        if (!Path::isAbsolute(filesdir)) {
+            filesdir = Path::fromNativeSeparators(Path::getPathFromFilename(exename));
+            #ifdef BINDIR
+                std::string bindir = BINDIR;
+                if (!bindir.empty()) {
+                    if (bindir.back() != '/')
+                        bindir += '/';
+                    if (filesdir.size() >= bindir.size() && std::equal(bindir.rbegin(), bindir.rend(), filesdir.rbegin()))
+                        filesdir.erase(filesdir.size() - bindir.size());
+                }
+            #endif
+            filesdir += FILESDIR;
+        }
+    }
+#endif
+    return filesdir;
+}

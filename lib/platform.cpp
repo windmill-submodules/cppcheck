@@ -205,11 +205,11 @@ bool Platform::loadFromFile(const char exename[], const std::string &filename, b
         filenames.push_back(Path::getPathFromFilename(Path::fromNativeSeparators(exename)) + "platforms/" + filename + ".xml");
     }
 #ifdef FILESDIR
-    std::string filesdir = FILESDIR;
-    if (!filesdir.empty() && filesdir[filesdir.size()-1] != '/')
-        filesdir += '/';
-    filenames.push_back(filesdir + ("platforms/" + filename));
-    filenames.push_back(filesdir + ("platforms/" + filename + ".xml"));
+    std::string filesdir = Path::getOptionalFilesDirPath(Path::fromNativeSeparators(Path::getCurrentExecutablePath(exename)));
+    if (!filesdir.empty()) {
+        filenames.push_back(filesdir + ("/platforms/" + filename));
+        filenames.push_back(filesdir + ("/platforms/" + filename + ".xml"));
+    }
 #endif
 
     // open file..

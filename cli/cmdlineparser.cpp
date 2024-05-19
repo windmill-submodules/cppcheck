@@ -1854,9 +1854,11 @@ bool CmdLineParser::loadLibraries(Settings& settings)
     if (!tryLoadLibrary(settings.library, settings.exename, "std.cfg")) {
         const std::string msg("Failed to load std.cfg. Your Cppcheck installation is broken, please re-install.");
 #ifdef FILESDIR
+        const std::string filesdir = Path::getOptionalFilesDirPath(settings.exename);
+        const std::string location = filesdir.empty() ? Path::fromNativeSeparators(Path::getPathFromFilename(settings.exename)) : filesdir;
         const std::string details("The Cppcheck binary was compiled with FILESDIR set to \""
                                   FILESDIR "\" and will therefore search for "
-                                  "std.cfg in " FILESDIR "/cfg.");
+                                  "std.cfg in " + location + "/cfg.");
 #else
         const std::string cfgfolder(Path::fromNativeSeparators(Path::getPathFromFilename(settings.exename)) + "cfg");
         const std::string details("The Cppcheck binary was compiled without FILESDIR set. Either the "

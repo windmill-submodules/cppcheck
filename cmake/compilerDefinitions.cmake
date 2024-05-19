@@ -63,3 +63,10 @@ endif()
 
 file(TO_CMAKE_PATH ${FILESDIR} _filesdir)
 add_definitions(-DFILESDIR="${_filesdir}")
+
+cmake_path(NORMAL_PATH CMAKE_INSTALL_FULL_BINDIR OUTPUT_VARIABLE _bindir)
+cmake_path(NORMAL_PATH CMAKE_INSTALL_PREFIX OUTPUT_VARIABLE _prefix)
+if (NOT "${_bindir}" EQUAL "${_prefix}")
+    cmake_path(RELATIVE_PATH CMAKE_INSTALL_FULL_BINDIR BASE_DIRECTORY "${CMAKE_INSTALL_PREFIX}" OUTPUT_VARIABLE _bindir)
+    add_definitions(-DBINDIR="${_bindir}")
+endif ()

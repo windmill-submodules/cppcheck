@@ -38,10 +38,13 @@ static std::string getFullPath(const std::string &fileName, const std::string &e
         return exepath + "addons/" + fileName;
 
 #ifdef FILESDIR
-    if (Path::isFile(FILESDIR + ("/" + fileName)))
-        return FILESDIR + ("/" + fileName);
-    if (Path::isFile(FILESDIR + ("/addons/" + fileName)))
-        return FILESDIR + ("/addons/" + fileName);
+    const std::string filesdir = Path::getOptionalFilesDirPath(exename);
+    if (!filesdir.empty()) {
+        if (Path::isFile(FILESDIR + ("/" + fileName)))
+            return FILESDIR + ("/" + fileName);
+        if (Path::isFile(FILESDIR + ("/addons/" + fileName)))
+            return FILESDIR + ("/addons/" + fileName);
+    }
 #endif
     return "";
 }

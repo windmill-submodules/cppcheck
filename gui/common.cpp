@@ -85,3 +85,23 @@ QString getDataDir()
         return appPath.left(appPath.indexOf("/cppcheck/", 0, Qt::CaseInsensitive) + 9);
     return appPath;
 }
+
+QString getFilesDir()
+{
+    QString filesdir;
+#ifdef FILESDIR
+    filesdir = FILESDIR;
+    if (!filesdir.isEmpty()) {
+        if (QFileInfo(filesdir).isRelative()) {
+            filesdir = QApplication::applicationDirPath();
+            #ifdef BINDIR
+                if (filesdir.endsWith("/" BINDIR)) {
+                    filesdir = filesdir.left(filesdir.lastIndexOf("/" BINDIR));
+                }
+            #endif
+            filesdir += "/" FILESDIR;
+        }
+    }
+#endif
+    return filesdir;
+}

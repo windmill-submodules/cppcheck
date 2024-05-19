@@ -151,5 +151,10 @@ QString toFilterString(const QMap<QString,QString>& filters, bool addAllSupporte
  */
 QString getDataDir();
 
+/*
+ * Get files dir. If FILESDIR is not defined then it will return empty.
+ */
+QString getFilesDir();
+
 /// @}
 #endif

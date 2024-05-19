@@ -102,7 +102,10 @@ Library::Error Library::load(const char exename[], const char path[])
 
         std::list<std::string> cfgfolders;
 #ifdef FILESDIR
-        cfgfolders.emplace_back(FILESDIR "/cfg");
+        const std::string filesdir = Path::getOptionalFilesDirPath(Path::fromNativeSeparators(Path::getCurrentExecutablePath(exename)));
+        if (!filesdir.empty()) {
+            cfgfolders.emplace_back(filesdir + "/cfg");
+        }
 #endif
         if (exename) {
             const std::string exepath(Path::fromNativeSeparators(Path::getPathFromFilename(Path::getCurrentExecutablePath(exename))));

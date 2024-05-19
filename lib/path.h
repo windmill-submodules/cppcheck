@@ -217,7 +217,14 @@ public:
      * join 2 paths with '/' separators
      */
     static std::string join(const std::string& path1, const std::string& path2);
+
+    /*
+     * Get files dir. If FILESDIR is not defined then it will return empty.
+     */
+    static std::string getOptionalFilesDirPath(const std::string &exename);
 };
+
+
 
 /// @}
 //---------------------------------------------------------------------------

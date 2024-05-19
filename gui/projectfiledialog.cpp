@@ -124,8 +124,10 @@ ProjectFileDialog::ProjectFileDialog(ProjectFile *projectFile, bool premium, QWi
     QStringList searchPaths;
     searchPaths << appPath << appPath + "/cfg" << inf.canonicalPath();
 #ifdef FILESDIR
-    if (FILESDIR[0])
-        searchPaths << FILESDIR << FILESDIR "/cfg";
+    const QString filesDir = getFilesDir();
+    if(!filesDir.isEmpty()) {
+        searchPaths << filesDir << filesDir "/cfg";
+    }
 #endif
     if (!datadir.isEmpty())
         searchPaths << datadir << datadir + "/cfg";
